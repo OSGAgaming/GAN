@@ -1,0 +1,4 @@
+C:\Users\tafid\source\repos\ArmourGan\ArmourGan\obj\Debug\netcoreapp3.1\ArmourGan.csprojAssemblyReference.cache
+C:\Users\tafid\source\repos\ArmourGan\ArmourGan\obj\Debug\netcoreapp3.1\ArmourGan.AssemblyInfoInputs.cache
+C:\Users\tafid\source\repos\ArmourGan\ArmourGan\obj\Debug\netcoreapp3.1\ArmourGan.AssemblyInfo.cs
+C:\Users\tafid\source\repos\ArmourGan\ArmourGan\obj\Debug\netcoreapp3.1\ArmourGan.csproj.CoreCompileInputs.cache
