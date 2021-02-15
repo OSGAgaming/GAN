@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using ArmourGan.MachineLearning;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -11,6 +12,7 @@ namespace ArmourGan
         public static SpriteBatch spriteBatch;
         public static Random rand;
         public static SpriteFont font;
+        public static Handwriting handwriting;
         public Main()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -22,6 +24,8 @@ namespace ArmourGan
         {
             // TODO: Add your initialization logic here
             rand = new Random();
+            handwriting = new Handwriting();
+            handwriting.Initialize();
             base.Initialize();
         }
 
@@ -34,6 +38,7 @@ namespace ArmourGan
 
         protected override void Update(GameTime gameTime)
         {
+            handwriting.Update();
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 

@@ -25,3 +25,6 @@ C:\Users\tafid\source\repos\ArmourGan\ArmourGan\GAN\obj\Debug\netcoreapp3.1\Armo
 C:\Users\tafid\source\repos\ArmourGan\ArmourGan\GAN\obj\Debug\netcoreapp3.1\ArmourGan.dll
 C:\Users\tafid\source\repos\ArmourGan\ArmourGan\GAN\obj\Debug\netcoreapp3.1\ArmourGan.pdb
 C:\Users\tafid\source\repos\ArmourGan\ArmourGan\GAN\obj\Debug\netcoreapp3.1\ArmourGan.genruntimeconfig.cache
+C:\Users\tafid\source\repos\ArmourGan\ArmourGan\GAN\bin\Debug\netcoreapp3.1\Microsoft.Office.Interop.Excel.dll
+C:\Users\tafid\source\repos\ArmourGan\ArmourGan\GAN\bin\Debug\netcoreapp3.1\Content\MachineLearning\DataSet\DalantiniumGreathelm.xnb
+C:\Users\tafid\source\repos\ArmourGan\ArmourGan\GAN\bin\Debug\netcoreapp3.1\Content\MachineLearning\DataSet\DalantiniumGreathelm_Head.xnb

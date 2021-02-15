@@ -1,11 +1,23 @@
 {
   "version": 2,
-  "dgSpecHash": "D67S9Izs3Sl8Nq2J6+V7SOfLPgnnuvz3ywDr6Kij2oPUxYpZMEb3RcfQ21KOm53biegJeTSfWcq2ZYyZMvYWGA==",
+  "dgSpecHash": "7YTFSm1WuUHSfOO9u07zEqVZg3YLwnpqS21hw0PiqPxJij7gloOZ4IUwQYPSy7GvxWko2jQh+AjgFPeyXzR1Fw==",
   "success": true,
   "projectFilePath": "C:\\Users\\tafid\\source\\repos\\ArmourGan\\ArmourGan\\GAN\\ArmourGan.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\tafid\\.nuget\\packages\\microsoft.office.interop.excel\\15.0.4795.1000\\microsoft.office.interop.excel.15.0.4795.1000.nupkg.sha512",
     "C:\\Users\\tafid\\.nuget\\packages\\monogame.content.builder.task\\3.8.0.1641\\monogame.content.builder.task.3.8.0.1641.nupkg.sha512",
     "C:\\Users\\tafid\\.nuget\\packages\\monogame.framework.desktopgl\\3.8.0.1641\\monogame.framework.desktopgl.3.8.0.1641.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'Microsoft.Office.Interop.Excel 15.0.4795.1000' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework '.NETCoreApp,Version=v3.1'. This package may not be fully compatible with your project.",
+      "libraryId": "Microsoft.Office.Interop.Excel",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v3.1"
+      ]
+    }
+  ]
 }

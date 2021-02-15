@@ -1,4 +1,7 @@
 ﻿
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -8,13 +11,14 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Threading;
-
+using Excel = Microsoft.Office.Interop.Excel;
+using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
 namespace ArmourGan.MachineLearning
 {
     public class Handwriting : NeuralNetwork
     {
-        public override int sizeOfData => 5000;
+        public override int sizeOfData => 1;
         public override int SIZEOFINPUTS => 169;
         public int SIZEOFUNPROCESSEDINPUTS => 784;
         public override int NumberOfKernels => 2;
@@ -33,17 +37,17 @@ namespace ArmourGan.MachineLearning
         public float[] GotoVals = new float[10];
         public void Clear()
         {
-            for(int i = 0; i<UIInputs.Length; i++)
+            for (int i = 0; i < UIInputs.Length; i++)
             {
                 UIInputs[i] = 0;
             }
         }
-       /* public void Draw()
+        public void Draw()
         {
             int PixelSize = 13;
-            Vector2 StartPoint = Main.screenPosition.ForDraw() + new Vector2(0,100);
-            Rectangle MouseSquare = new Rectangle((int)Main.MouseScreen.X, (int)Main.MouseScreen.Y, 2, 2);
-            if(Main.LocalPlayer.controlHook)
+            Vector2 StartPoint = new Vector2(0, 100);
+            Rectangle MouseSquare = new Rectangle(0, 0, 2, 2);
+            /*if(Main.LocalPlayer.controlHook)
             {
                 SerliazeCurrentPerceptron();
                 Main.NewText("ObjectSaved!");
@@ -52,10 +56,11 @@ namespace ArmourGan.MachineLearning
             {
                 Clear();
             }
+            */
             for (int i = 0; i < UIInputs.Length; i++)
             {
                 Rectangle box = new Rectangle((int)StartPoint.X + (i % IMAGEWIDTH) * PixelSize, (int)StartPoint.Y + (i / IMAGEHEIGHT) * PixelSize, PixelSize, PixelSize);
-                if (MouseSquare.Intersects(box) && Main.LocalPlayer.controlUseItem)
+                if (MouseSquare.Intersects(box) && Mouse.GetState().LeftButton == ButtonState.Pressed)
                 {
                     UIInputs[i] = 1;
                     if (i - IMAGEWIDTH > 0)
@@ -76,31 +81,28 @@ namespace ArmourGan.MachineLearning
                     }
                 }
                 UIInputs[i] = Math.Min(UIInputs[i], 1);
-                Main.spriteBatch.Draw(Main.magicPixel, box, Color.Lerp(Color.Black,Color.White, (float)UIInputs[i]));
+                Main.spriteBatch.Draw(TextureCache.pixel, box, Color.Lerp(Color.Black, Color.White, (float)UIInputs[i]));
             }
-            for(int i = 0; i <Vals.Count; i++)
+            for (int i = 0; i < Vals.Count; i++)
             {
                 GotoVals[i] += (Vals[i] - GotoVals[i]) / 64f;
                 int Seperation = 20;
                 int Length = 500;
-                Rectangle box = new Rectangle((int)StartPoint.X + IMAGEWIDTH * PixelSize, (int)StartPoint.Y + i* Seperation, (int)(Length* GotoVals[i]), 20);
-                EEMod.UIText(i.ToString(), Color.White, new Vector2((int)StartPoint.X + IMAGEWIDTH * PixelSize - 10, (int)StartPoint.Y + i * Seperation), 1);
-                Main.spriteBatch.Draw(Main.magicPixel, box, Color.Lerp(Color.Red,Color.Green, GotoVals[i]));
+                Rectangle box = new Rectangle((int)StartPoint.X + IMAGEWIDTH * PixelSize, (int)StartPoint.Y + i * Seperation, (int)(Length * GotoVals[i]), 20);
+                //EEMod.UIText(i.ToString(), Color.White, new Vector2((int)StartPoint.X + IMAGEWIDTH * PixelSize - 10, (int)StartPoint.Y + i * Seperation), 1);
+                Main.spriteBatch.Draw(TextureCache.pixel, box, Color.Lerp(Color.Red, Color.Green, GotoVals[i]));
             }
             try
             {
                 if (File.Exists(PerceptronSavePath))
                 {
-                    Main.NewText(PredictPicture(UIInputs, DeserializeSavedPerceptron())[3]);
                     Vals = PredictPicture(UIInputs, DeserializeSavedPerceptron());
                 }
             }
             catch
             {
-                if(Main.rand.Next(40) == 1)
-                Main.NewText("Failed");
             }
-        }*/
+        }
         int[] convolutionalFilter1 =
         {
         -1, 0, 1,
@@ -150,55 +152,63 @@ namespace ArmourGan.MachineLearning
         {
             isActive = true;
             MainPerceptron = new Perceptron(SIZEOFINPUTS * NumberOfKernels, SIZEOFINPUTS, SIZEOFINPUTS / 2, NumberOfClassifications, 0.01f);
-            //CreateNewDataSet($@"C:\Users\tafid\Desktop\processing-3.5.4-windows64\processing-3.5.4\Handwriting\mnist_test");
+            CreateNewDataSet();
+            //CreateNewDataSet($@"C:\Users\tafid\source\repos\ArmourGan\ArmourGan\GAN\MachineLearning\DataSet\mnist_test");
         }
-        /*
-            public void CreateNewDataSet(string TrainingInputsExcel)
-            {
-                Excel.Application xlApp = new Excel.Application();
+
+        public void CreateNewDataSet()
+        {
+            objTrainer = new Trainer[sizeOfData];
+            Bitmap  
+            double[,] a = TextureCache.d.
+        }
+        
+        public void CreateNewDataSet(string TrainingInputsExcel)
+        {
+            Excel.Application xlApp = new Excel.Application();
             Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(TrainingInputsExcel);
             Excel._Worksheet xlWorksheet = (Excel._Worksheet)xlWorkbook.Sheets[1];
             Excel.Range xlRange = xlWorksheet.UsedRange;
-                  dynamic[,] excelArray = xlRange.Value2 as dynamic[,];
-                  objTrainer = new Trainer[sizeOfData];
-                  CurrentData = 0;
-                  for (int i = 0; i < objTrainer.Length; i++)
-                  {
-                      percDoneWithLoading = i;
-                      int currentRow = Main.rand.Next(2, xlRange.Rows.Count - 1);
-                      double[] inputs = new double[SIZEOFUNPROCESSEDINPUTS];
-                      for (int a = 0; a < SIZEOFUNPROCESSEDINPUTS; a++)
-                      {
-                          inputs[a] = excelArray[currentRow, a + 1] / (double)255;
-                      }
-                      float[] answers = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-                      answers[(int)excelArray[currentRow, 1]] = 1;
-                      objTrainer[i] = new Trainer(inputs, answers, currentRow);
+            dynamic[,] excelArray = xlRange.Value2 as dynamic[,];
+            objTrainer = new Trainer[sizeOfData];
+            CurrentData = 0;
+            for (int i = 0; i < objTrainer.Length; i++)
+            {
+                percDoneWithLoading = i;
+                int currentRow = Main.rand.Next(2, xlRange.Rows.Count - 1);
+                double[] inputs = new double[SIZEOFUNPROCESSEDINPUTS];
+                for (int a = 0; a < SIZEOFUNPROCESSEDINPUTS; a++)
+                {
+                    inputs[a] = excelArray[currentRow, a + 1] / (double)255;
+                }
+                float[] answers = new float[NumberOfClassifications];
+                answers[(int)excelArray[currentRow, 1]] = 1;
+                objTrainer[i] = new Trainer(inputs, answers, currentRow);
 
-                      float[][] Kernels =
-                      {
+                float[][] Kernels =
+                {
                        KernelMultidimensionalArray3x3<float>(inputs, IMAGEWIDTH, IMAGEHEIGHT, convolutionalFilter1,1),
                        KernelMultidimensionalArray3x3<float>(inputs, IMAGEWIDTH, IMAGEHEIGHT, convolutionalFilter2,1)
                      };
 
-                      float[][] Pools =
-                      {
+                float[][] Pools =
+                {
                        MaxPoolMultiDimensionalArray<float>(Kernels[0], IMAGEWIDTH - 2,IMAGEHEIGHT - 2,2,2),
                        MaxPoolMultiDimensionalArray<float>(Kernels[1], IMAGEWIDTH - 2,IMAGEHEIGHT - 2,2,2)
                       };
 
-                      objTrainer[i].kerneledInputs = Flatten<float>(Pools);
-                  }
-                  Console.WriteLine("Done!");
-                  xlWorkbook.Close(true, null, null);
-                  xlApp.Quit();
-
-                  Marshal.ReleaseComObject(xlWorksheet);
-                  Marshal.ReleaseComObject(xlWorkbook);
-                  Marshal.ReleaseComObject(xlApp);
-              }
+                objTrainer[i].kerneledInputs = Flatten<float>(Pools);
             }
-        */
+            Console.WriteLine("Done!");
+            xlWorkbook.Close(true, null, null);
+            xlApp.Quit();
+
+            Marshal.ReleaseComObject(xlWorksheet);
+            Marshal.ReleaseComObject(xlWorkbook);
+            Marshal.ReleaseComObject(xlApp);
+        }
     }
 
 }
+
+

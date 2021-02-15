@@ -10,15 +10,15 @@ namespace ArmourGan
     public class TextureCache
     {
         public static Texture2D pixel;
+        public static Texture2D d;
+        public static Texture2D d1;
         public static void LoadTextures(ContentManager content)
         {
             pixel = new Texture2D(Main.graphics.GraphicsDevice, 1, 1);
             pixel.SetData(new Color[] { Color.White });
 
-            //FrontBicep = content.Load<Texture2D>("BodyParts/FrontBicep");
-            //FrontForearm = content.Load<Texture2D>("BodyParts/FrontForearm");
-            //BackBicep = content.Load<Texture2D>("BodyParts/BackBicep");
-            //BackForearm = content.Load<Texture2D>("BodyParts/BackForearm");
+            d = content.Load<Texture2D>("MachineLearning/DataSet/DalantiniumGreathelm");
+            d1 = content.Load<Texture2D>("MachineLearning/DataSet/DalantiniumGreathelm_Head");
         }
     }
 }
