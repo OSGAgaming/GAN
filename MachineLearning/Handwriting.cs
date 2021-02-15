@@ -148,10 +148,11 @@ namespace ArmourGan.MachineLearning
         }
         public override void OnInitialize()
         {
-            //isActive = true;
-           // MainPerceptron = new Perceptron(SIZEOFINPUTS * NumberOfKernels, SIZEOFINPUTS, SIZEOFINPUTS / 2, NumberOfClassifications, 0.01f);
+            isActive = true;
+            MainPerceptron = new Perceptron(SIZEOFINPUTS * NumberOfKernels, SIZEOFINPUTS, SIZEOFINPUTS / 2, NumberOfClassifications, 0.01f);
             //CreateNewDataSet($@"C:\Users\tafid\Desktop\processing-3.5.4-windows64\processing-3.5.4\Handwriting\mnist_test");
-        }/*
+        }
+        /*
             public void CreateNewDataSet(string TrainingInputsExcel)
             {
                 Excel.Application xlApp = new Excel.Application();
