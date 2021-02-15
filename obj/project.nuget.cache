@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "4znjzU/eRwTV69d5GBA4AbmkX9yqchfSekeOkHve90VeP3bXbT4+4aMZku57oSxfIfJhCQYGyN9GkKR6jBCzKQ==",
+  "dgSpecHash": "D67S9Izs3Sl8Nq2J6+V7SOfLPgnnuvz3ywDr6Kij2oPUxYpZMEb3RcfQ21KOm53biegJeTSfWcq2ZYyZMvYWGA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\tafid\\source\\repos\\ArmourGan\\ArmourGan\\ArmourGan.csproj",
+  "projectFilePath": "C:\\Users\\tafid\\source\\repos\\ArmourGan\\ArmourGan\\GAN\\ArmourGan.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\tafid\\.nuget\\packages\\monogame.content.builder.task\\3.8.0.1641\\monogame.content.builder.task.3.8.0.1641.nupkg.sha512",
     "C:\\Users\\tafid\\.nuget\\packages\\monogame.framework.desktopgl\\3.8.0.1641\\monogame.framework.desktopgl.3.8.0.1641.nupkg.sha512"

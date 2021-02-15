@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\tafid\\source\\repos\\ArmourGan\\ArmourGan\\ArmourGan.csproj": {}
+    "C:\\Users\\tafid\\source\\repos\\ArmourGan\\ArmourGan\\GAN\\ArmourGan.csproj": {}
   },
   "projects": {
-    "C:\\Users\\tafid\\source\\repos\\ArmourGan\\ArmourGan\\ArmourGan.csproj": {
+    "C:\\Users\\tafid\\source\\repos\\ArmourGan\\ArmourGan\\GAN\\ArmourGan.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\tafid\\source\\repos\\ArmourGan\\ArmourGan\\ArmourGan.csproj",
+        "projectUniqueName": "C:\\Users\\tafid\\source\\repos\\ArmourGan\\ArmourGan\\GAN\\ArmourGan.csproj",
         "projectName": "ArmourGan",
-        "projectPath": "C:\\Users\\tafid\\source\\repos\\ArmourGan\\ArmourGan\\ArmourGan.csproj",
+        "projectPath": "C:\\Users\\tafid\\source\\repos\\ArmourGan\\ArmourGan\\GAN\\ArmourGan.csproj",
         "packagesPath": "C:\\Users\\tafid\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\tafid\\source\\repos\\ArmourGan\\ArmourGan\\obj\\",
+        "outputPath": "C:\\Users\\tafid\\source\\repos\\ArmourGan\\ArmourGan\\GAN\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\tafid\\AppData\\Roaming\\NuGet\\NuGet.Config",
