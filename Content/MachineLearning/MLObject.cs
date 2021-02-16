@@ -6,20 +6,20 @@ namespace ArmourGan.MachineLearning
     [Serializable]
     public class MLObject
     {
-        public void Initialize()
+        public void Load()
         {
-            OnInitialize();
+            OnLoad();
         }
         public void Update()
         {
             OnUpdate();
         }
-        public virtual void OnInitialize() {; }
+        public virtual void OnLoad() { ; }
 
-        public virtual void OnUpdate() {; }
+        public virtual void OnUpdate() { ; }
         public MLObject()
         {
-            Initialize();
+            Load();
         }
     }
 }

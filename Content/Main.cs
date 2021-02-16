@@ -25,7 +25,6 @@ namespace ArmourGan
             // TODO: Add your initialization logic here
             rand = new Random();
             handwriting = new Handwriting();
-            handwriting.Initialize();
             base.Initialize();
         }
 

@@ -12,7 +12,7 @@ namespace ArmourGan.MachineLearning
         internal Serializers Serializer = new Serializers();
         public virtual int TrainStride => 1;
         public Perceptron MainPerceptron = new Perceptron(169 * 2, 169, 80, 10, 0.01f);
-        public Trainer[] objTrainer;
+        public Trainer[] Dataset;
         public Neuron Layers = new Neuron();
         public int CurrentData;
         public void MoveToNext()
@@ -29,19 +29,29 @@ namespace ArmourGan.MachineLearning
 
         public void FeedForward()
         {
-            Layers.finalLayer = MainPerceptron.FeedForward(objTrainer[CurrentData].kerneledInputs);
+            Layers.finalLayer = MainPerceptron.FeedForward(Dataset[CurrentData].kerneledInputs);
         }
+        public override void OnLoad()
+        {
+            Initialize();
+            isActive = true;
+            MainPerceptron = new Perceptron(SIZEOFINPUTS * NumberOfKernels, SIZEOFINPUTS, SIZEOFINPUTS / 2, NumberOfClassifications, 0.01f);
+            Dataset = LoadDataset();
+        }
+        public virtual Trainer[] LoadDataset() => new Trainer[] { };
+
+        public virtual void Initialize() { ; }
         public float Error()
         {
-            ERROR = MainPerceptron.getError(objTrainer[CurrentData].answer, Layers.finalLayer);
+            ERROR = MainPerceptron.getError(Dataset[CurrentData].answer, Layers.finalLayer);
             return ERROR;
         }
         public void Train()
         {
-            MainPerceptron.Train(Layers.finalLayer, objTrainer[CurrentData].answer, objTrainer[CurrentData].kerneledInputs, MainPerceptron.firstHiddenLayer, MainPerceptron.secondHiddenLayer);
+            MainPerceptron.Train(Layers.finalLayer, Dataset[CurrentData].answer, Dataset[CurrentData].kerneledInputs, MainPerceptron.firstHiddenLayer, MainPerceptron.secondHiddenLayer);
         }
         internal List<int[,]> ConvolutionalFilters = new List<int[,]>();
-        public virtual int IMAGEWIDTH
+        public int IMAGEWIDTH
         {
             get;
             set;
@@ -51,7 +61,7 @@ namespace ArmourGan.MachineLearning
             get;
             set;
         }
-        public virtual int IMAGEHEIGHT
+        public int IMAGEHEIGHT
         {
             get;
             set;

@@ -20,8 +20,6 @@ namespace ArmourGan.MachineLearning
     public class Handwriting : NeuralNetwork
     {
         public override int sizeOfData => 40000;
-        public override int IMAGEHEIGHT => 1120;
-        public override int IMAGEWIDTH => 40;
         public override int SIZEOFINPUTS => 72;
         public int SIZEOFUNPROCESSEDINPUTS => IMAGEHEIGHT * IMAGEWIDTH;
         public override int NumberOfKernels => 2;
@@ -46,10 +44,10 @@ namespace ArmourGan.MachineLearning
         }
         public void Draw()
         {
-            int PixelSize = 13;
+            /*int PixelSize = 13;
             Vector2 StartPoint = Vector2.Zero;
             Rectangle MouseSquare = new Rectangle(Mouse.GetState().X, Mouse.GetState().Y, 2, 2);
-            /*if(Main.LocalPlayer.controlHook)
+            if(Main.LocalPlayer.controlHook)
             {
                 SerliazeCurrentPerceptron();
                 Main.NewText("ObjectSaved!");
@@ -63,11 +61,11 @@ namespace ArmourGan.MachineLearning
             {
                 for (int j = 0; j < IMAGEHEIGHT; j++)
                 {
-                    float a = (float)objTrainer[1].input[i*IMAGEHEIGHT + j] / 255;
+                    float a = (float)Dataset[1].input[i* IMAGEWIDTH + j] / 255;
                     Utils.DrawBoxFill(new Vector2(i* 5, j * 5), 10, 10, new Color(a, a, a));
                 }
             }
-
+            /*
             for (int i = 0; i < UIInputs.Length; i++)
             {
                 Rectangle box = new Rectangle((int)StartPoint.X + (i % IMAGEWIDTH) * PixelSize, (int)StartPoint.Y + (i / IMAGEHEIGHT) * PixelSize, PixelSize, PixelSize);
@@ -94,12 +92,6 @@ namespace ArmourGan.MachineLearning
                 UIInputs[i] = Math.Min(UIInputs[i], 1);
                // Main.spriteBatch.Draw(TextureCache.pixel, box, Color.Lerp(Color.Black, Color.White, (float)UIInputs[i]));
             }
-            for (int i = 0; i < Vals.Count; i++)
-            {
-                GotoVals[i] += (Vals[i] - GotoVals[i]) / 64f;
-                int Seperation = 20;
-                int Length = 500;
-            }
             try
             {
                 if (File.Exists(PerceptronSavePath))
@@ -109,7 +101,7 @@ namespace ArmourGan.MachineLearning
             }
             catch
             {
-            }
+            }*/
         }
         int[] convolutionalFilter1 =
         {
@@ -133,8 +125,8 @@ namespace ArmourGan.MachineLearning
                 Error();
                 Train();
                 Prediction = MainPerceptron.firstHiddenLayer.IndexOf(MainPerceptron.firstHiddenLayer.Max());
-                float maxValue = objTrainer[CurrentData].answer.Max();
-                Answer = objTrainer[CurrentData].answer.ToList().IndexOf(maxValue);
+                float maxValue = Dataset[CurrentData].answer.Max();
+                Answer = Dataset[CurrentData].answer.ToList().IndexOf(maxValue);
                 Layers.errors.Add(ERROR);
             }
         }
@@ -156,21 +148,15 @@ namespace ArmourGan.MachineLearning
             KerneledInputs = Flatten<float>(Pools);
             return ptron.FeedForward(KerneledInputs);
         }
-        public override void OnInitialize()
-        {
-            UIInputs = new double[IMAGEWIDTH * IMAGEHEIGHT];
-            isActive = true;
-            MainPerceptron = new Perceptron(SIZEOFINPUTS * NumberOfKernels, SIZEOFINPUTS, SIZEOFINPUTS / 2, NumberOfClassifications, 0.01f);
-            CreateNewDataSet();
-            //CreateNewDataSet($@"C:\Users\tafid\source\repos\ArmourGan\ArmourGan\GAN\MachineLearning\DataSet\mnist_test");
-        }
         internal string GANPath => Environment.ExpandEnvironmentVariables(@$"%UserProfile%\source\repos\ArmourGan\ArmourGan\GAN\Content\MachineLearning\DataSet\");
-        public void CreateNewDataSet()
+        public override Trainer[] LoadDataset()
         {
-            objTrainer = new Trainer[sizeOfData];
-            string path = $"{GANPath}DalantiniumGreathelm_Head.png";
+            Trainer[] DatasetBuffer = new Trainer[sizeOfData];
+            string path = $"{GANPath}DalantiniumGreathelm.png";
             System.Drawing.Bitmap BM = new System.Drawing.Bitmap(path);
             double[] input = new double[BM.Width * BM.Height];
+            IMAGEWIDTH = BM.Width;
+            IMAGEHEIGHT = BM.Height;
             for (int i = 0; i<BM.Width; i++)
             {
                 for (int j = 0; j < BM.Height; j++)
@@ -184,31 +170,32 @@ namespace ArmourGan.MachineLearning
                 {
                        KernelMultidimensionalArray3x3<float>(input, IMAGEWIDTH, IMAGEHEIGHT, convolutionalFilter1,1),
                        KernelMultidimensionalArray3x3<float>(input, IMAGEWIDTH, IMAGEHEIGHT, convolutionalFilter2,1)
-                     };
+                };
 
             float[][] Pools =
             {
                        MaxPoolMultiDimensionalArray<float>(Kernels[0], IMAGEWIDTH - 2,IMAGEHEIGHT - 2,2,2),
                        MaxPoolMultiDimensionalArray<float>(Kernels[1], IMAGEWIDTH - 2,IMAGEHEIGHT - 2,2,2)
-                      };
+            };
             for (int i = 0; i < sizeOfData; i++)
             {
-                objTrainer[i] = new Trainer(input, answers);
-                objTrainer[i].kerneledInputs = Flatten<float>(Pools);
+                DatasetBuffer[i] = new Trainer(input, answers);
+                DatasetBuffer[i].kerneledInputs = Flatten<float>(Pools);
 
             }
+            return DatasetBuffer;
         }
         
-        public void CreateNewDataSet(string TrainingInputsExcel)
+     /*   public void CreateNewDataSet(string TrainingInputsExcel)
         {
             Excel.Application xlApp = new Excel.Application();
             Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(TrainingInputsExcel);
             Excel._Worksheet xlWorksheet = (Excel._Worksheet)xlWorkbook.Sheets[1];
             Excel.Range xlRange = xlWorksheet.UsedRange;
             dynamic[,] excelArray = xlRange.Value2 as dynamic[,];
-            objTrainer = new Trainer[sizeOfData];
+            Dataset = new Trainer[sizeOfData];
             CurrentData = 0;
-            for (int i = 0; i < objTrainer.Length; i++)
+            for (int i = 0; i < Dataset.Length; i++)
             {
                 percDoneWithLoading = i;
                 int currentRow = Main.rand.Next(2, xlRange.Rows.Count - 1);
@@ -219,7 +206,7 @@ namespace ArmourGan.MachineLearning
                 }
                 float[] answers = new float[NumberOfClassifications];
                 answers[(int)excelArray[currentRow, 1]] = 1;
-                objTrainer[i] = new Trainer(inputs, answers);
+                Dataset[i] = new Trainer(inputs, answers);
 
                 float[][] Kernels =
                 {
@@ -233,7 +220,7 @@ namespace ArmourGan.MachineLearning
                        MaxPoolMultiDimensionalArray<float>(Kernels[1], IMAGEWIDTH - 2,IMAGEHEIGHT - 2,2,2)
                       };
 
-                objTrainer[i].kerneledInputs = Flatten<float>(Pools);
+                Dataset[i].kerneledInputs = Flatten<float>(Pools);
             }
             Console.WriteLine("Done!");
             xlWorkbook.Close(true, null, null);
@@ -242,7 +229,7 @@ namespace ArmourGan.MachineLearning
             Marshal.ReleaseComObject(xlWorksheet);
             Marshal.ReleaseComObject(xlWorkbook);
             Marshal.ReleaseComObject(xlApp);
-        }
+        }*/
     }
 
 }
