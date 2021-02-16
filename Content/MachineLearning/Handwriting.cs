@@ -20,8 +20,8 @@ namespace ArmourGan.MachineLearning
     public class Handwriting : NeuralNetwork
     {
         public override int sizeOfData => 40000;
-        public override int IMAGEHEIGHT => 18;
-        public override int IMAGEWIDTH => 20;
+        public override int IMAGEHEIGHT => 1120;
+        public override int IMAGEWIDTH => 40;
         public override int SIZEOFINPUTS => 72;
         public int SIZEOFUNPROCESSEDINPUTS => IMAGEHEIGHT * IMAGEWIDTH;
         public override int NumberOfKernels => 2;
@@ -99,9 +99,6 @@ namespace ArmourGan.MachineLearning
                 GotoVals[i] += (Vals[i] - GotoVals[i]) / 64f;
                 int Seperation = 20;
                 int Length = 500;
-                Rectangle box = new Rectangle((int)StartPoint.X + IMAGEWIDTH * PixelSize, (int)StartPoint.Y + i * Seperation, (int)(Length * GotoVals[i]), 20);
-                //EEMod.UIText(i.ToString(), Color.White, new Vector2((int)StartPoint.X + IMAGEWIDTH * PixelSize - 10, (int)StartPoint.Y + i * Seperation), 1);
-               // Main.spriteBatch.Draw(TextureCache.pixel, box, Color.Lerp(Color.Red, Color.Green, GotoVals[i]));
             }
             try
             {
@@ -171,7 +168,7 @@ namespace ArmourGan.MachineLearning
         public void CreateNewDataSet()
         {
             objTrainer = new Trainer[sizeOfData];
-            string path = $"{GANPath}DalantiniumGreathelm.png";
+            string path = $"{GANPath}DalantiniumGreathelm_Head.png";
             System.Drawing.Bitmap BM = new System.Drawing.Bitmap(path);
             double[] input = new double[BM.Width * BM.Height];
             for (int i = 0; i<BM.Width; i++)
