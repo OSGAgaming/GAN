@@ -20,12 +20,8 @@ namespace ArmourGan.MachineLearning
     public class Handwriting : NeuralNetwork
     {
         public override int sizeOfData => 40000;
-        public override int SIZEOFINPUTS => 72;
-        public int SIZEOFUNPROCESSEDINPUTS => IMAGEHEIGHT * IMAGEWIDTH;
-        public override int NumberOfKernels => 2;
         public override int NumberOfClassifications => 10;
         public override float LearningRate => 0.01f;
-
         public override string PerceptronSavePath => $@"\Mod Sources\EEMod\MachineLearning\PerceptronData.TrivBadMod";
 
         public int percDoneWithLoading;
@@ -61,8 +57,8 @@ namespace ArmourGan.MachineLearning
             {
                 for (int j = 0; j < IMAGEHEIGHT; j++)
                 {
-                    float a = (float)Dataset[1].input[i* IMAGEWIDTH + j] / 255;
-                    Utils.DrawBoxFill(new Vector2(i* 5, j * 5), 10, 10, new Color(a, a, a));
+                    float a = (float)Dataset[1].input[i * IMAGEWIDTH + j] / 255;
+                    Utils.DrawBoxFill(new Vector2(i * 5, j * 5), 10, 10, new Color(a, a, a));
                 }
             }
             /*
@@ -103,18 +99,20 @@ namespace ArmourGan.MachineLearning
             {
             }*/
         }
-        int[] convolutionalFilter1 =
+        public override int[][] Convolutions => new int[][]
+        {
+        new int[]
         {
         -1, 0, 1,
         -1, 0, 1,
         -1, 0, 1
-        };
-
-        int[] convolutionalFilter2 =
+        },
+        new int[]
         {
-         -1,-1,-1,
-          0, 0, 0,
-          1, 1, 1
+        -1,-1,-1,
+         0, 0, 0,
+         1, 1, 1
+        }
         };
         public override void OnUpdate()
         {
@@ -130,15 +128,11 @@ namespace ArmourGan.MachineLearning
                 Layers.errors.Add(ERROR);
             }
         }
+        
         List<float> PredictPicture(double[] inputs, Perceptron ptron)
         {
             float[] KerneledInputs;
-            float[][] Kernels =
-               {
-                 KernelMultidimensionalArray3x3<float>(inputs, IMAGEWIDTH, IMAGEHEIGHT, convolutionalFilter1,1),
-                 KernelMultidimensionalArray3x3<float>(inputs, IMAGEWIDTH, IMAGEHEIGHT, convolutionalFilter2,1)
-               };
-
+            float[][] Kernels = Kernel(inputs);
             float[][] Pools =
               {
                  MaxPoolMultiDimensionalArray<float>(Kernels[0], IMAGEWIDTH - 2,IMAGEHEIGHT - 2,2,2),
@@ -157,79 +151,74 @@ namespace ArmourGan.MachineLearning
             double[] input = new double[BM.Width * BM.Height];
             IMAGEWIDTH = BM.Width;
             IMAGEHEIGHT = BM.Height;
-            for (int i = 0; i<BM.Width; i++)
+            for (int i = 0; i < BM.Width; i++)
             {
                 for (int j = 0; j < BM.Height; j++)
                 {
-                    input[j + i * BM.Width] = (BM.GetPixel(i, j).R + BM.GetPixel(i, j).G + BM.GetPixel(i, j).B)/3f;
+                    input[j + i * BM.Width] = (BM.GetPixel(i, j).R + BM.GetPixel(i, j).G + BM.GetPixel(i, j).B) / 3f;
                 }
             }
             float[] answers = new float[NumberOfClassifications];
-           
-            float[][] Kernels =
-                {
-                       KernelMultidimensionalArray3x3<float>(input, IMAGEWIDTH, IMAGEHEIGHT, convolutionalFilter1,1),
-                       KernelMultidimensionalArray3x3<float>(input, IMAGEWIDTH, IMAGEHEIGHT, convolutionalFilter2,1)
-                };
 
-            float[][] Pools =
-            {
-                       MaxPoolMultiDimensionalArray<float>(Kernels[0], IMAGEWIDTH - 2,IMAGEHEIGHT - 2,2,2),
-                       MaxPoolMultiDimensionalArray<float>(Kernels[1], IMAGEWIDTH - 2,IMAGEHEIGHT - 2,2,2)
-            };
+            float[][] Kernels = Kernel(input);
+
+            float[][] Pools = Pool(Kernels);
+
+
             for (int i = 0; i < sizeOfData; i++)
             {
                 DatasetBuffer[i] = new Trainer(input, answers);
                 DatasetBuffer[i].kerneledInputs = Flatten<float>(Pools);
-
+                SIZEOFINPUTS = DatasetBuffer[i].kerneledInputs.Length / NumberOfKernels;
             }
+
             return DatasetBuffer;
         }
-        
-     /*   public void CreateNewDataSet(string TrainingInputsExcel)
-        {
-            Excel.Application xlApp = new Excel.Application();
-            Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(TrainingInputsExcel);
-            Excel._Worksheet xlWorksheet = (Excel._Worksheet)xlWorkbook.Sheets[1];
-            Excel.Range xlRange = xlWorksheet.UsedRange;
-            dynamic[,] excelArray = xlRange.Value2 as dynamic[,];
-            Dataset = new Trainer[sizeOfData];
-            CurrentData = 0;
-            for (int i = 0; i < Dataset.Length; i++)
-            {
-                percDoneWithLoading = i;
-                int currentRow = Main.rand.Next(2, xlRange.Rows.Count - 1);
-                double[] inputs = new double[SIZEOFUNPROCESSEDINPUTS];
-                for (int a = 0; a < SIZEOFUNPROCESSEDINPUTS; a++)
-                {
-                    inputs[a] = excelArray[currentRow, a + 1] / (double)255;
-                }
-                float[] answers = new float[NumberOfClassifications];
-                answers[(int)excelArray[currentRow, 1]] = 1;
-                Dataset[i] = new Trainer(inputs, answers);
 
-                float[][] Kernels =
-                {
-                       KernelMultidimensionalArray3x3<float>(inputs, IMAGEWIDTH, IMAGEHEIGHT, convolutionalFilter1,1),
-                       KernelMultidimensionalArray3x3<float>(inputs, IMAGEWIDTH, IMAGEHEIGHT, convolutionalFilter2,1)
-                     };
+        /*   public void CreateNewDataSet(string TrainingInputsExcel)
+           {
+               Excel.Application xlApp = new Excel.Application();
+               Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(TrainingInputsExcel);
+               Excel._Worksheet xlWorksheet = (Excel._Worksheet)xlWorkbook.Sheets[1];
+               Excel.Range xlRange = xlWorksheet.UsedRange;
+               dynamic[,] excelArray = xlRange.Value2 as dynamic[,];
+               Dataset = new Trainer[sizeOfData];
+               CurrentData = 0;
+               for (int i = 0; i < Dataset.Length; i++)
+               {
+                   percDoneWithLoading = i;
+                   int currentRow = Main.rand.Next(2, xlRange.Rows.Count - 1);
+                   double[] inputs = new double[SIZEOFUNPROCESSEDINPUTS];
+                   for (int a = 0; a < SIZEOFUNPROCESSEDINPUTS; a++)
+                   {
+                       inputs[a] = excelArray[currentRow, a + 1] / (double)255;
+                   }
+                   float[] answers = new float[NumberOfClassifications];
+                   answers[(int)excelArray[currentRow, 1]] = 1;
+                   Dataset[i] = new Trainer(inputs, answers);
 
-                float[][] Pools =
-                {
-                       MaxPoolMultiDimensionalArray<float>(Kernels[0], IMAGEWIDTH - 2,IMAGEHEIGHT - 2,2,2),
-                       MaxPoolMultiDimensionalArray<float>(Kernels[1], IMAGEWIDTH - 2,IMAGEHEIGHT - 2,2,2)
-                      };
+                   float[][] Kernels =
+                   {
+                          KernelMultidimensionalArray3x3<float>(inputs, IMAGEWIDTH, IMAGEHEIGHT, convolutionalFilter1,1),
+                          KernelMultidimensionalArray3x3<float>(inputs, IMAGEWIDTH, IMAGEHEIGHT, convolutionalFilter2,1)
+                        };
 
-                Dataset[i].kerneledInputs = Flatten<float>(Pools);
-            }
-            Console.WriteLine("Done!");
-            xlWorkbook.Close(true, null, null);
-            xlApp.Quit();
+                   float[][] Pools =
+                   {
+                          MaxPoolMultiDimensionalArray<float>(Kernels[0], IMAGEWIDTH - 2,IMAGEHEIGHT - 2,2,2),
+                          MaxPoolMultiDimensionalArray<float>(Kernels[1], IMAGEWIDTH - 2,IMAGEHEIGHT - 2,2,2)
+                         };
 
-            Marshal.ReleaseComObject(xlWorksheet);
-            Marshal.ReleaseComObject(xlWorkbook);
-            Marshal.ReleaseComObject(xlApp);
-        }*/
+                   Dataset[i].kerneledInputs = Flatten<float>(Pools);
+               }
+               Console.WriteLine("Done!");
+               xlWorkbook.Close(true, null, null);
+               xlApp.Quit();
+
+               Marshal.ReleaseComObject(xlWorksheet);
+               Marshal.ReleaseComObject(xlWorkbook);
+               Marshal.ReleaseComObject(xlApp);
+           }*/
     }
 
 }

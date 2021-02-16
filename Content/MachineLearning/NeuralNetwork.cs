@@ -35,8 +35,9 @@ namespace ArmourGan.MachineLearning
         {
             Initialize();
             isActive = true;
-            MainPerceptron = new Perceptron(SIZEOFINPUTS * NumberOfKernels, SIZEOFINPUTS, SIZEOFINPUTS / 2, NumberOfClassifications, 0.01f);
+            NumberOfKernels = Convolutions.Length;
             Dataset = LoadDataset();
+            MainPerceptron = new Perceptron(SIZEOFINPUTS * NumberOfKernels, SIZEOFINPUTS, SIZEOFINPUTS / 2, NumberOfClassifications, 0.01f);
         }
         public virtual Trainer[] LoadDataset() => new Trainer[] { };
 
@@ -72,10 +73,29 @@ namespace ArmourGan.MachineLearning
             get;
             set;
         }
+        public float[][] Kernel(double[] inputs)
+        {
+            List<float[]> Kernels = new List<float[]>();
+            for (int i = 0; i < Convolutions.Length; i++)
+            {
+                Kernels.Add(KernelMultidimensionalArray3x3<float>(inputs, IMAGEWIDTH, IMAGEHEIGHT, Convolutions[i], 1));
+            }
+            return Kernels.ToArray();
+        }
+        public float[][] Pool(float[][] inputs)
+        {
+            List<float[]> Pools = new List<float[]>();
+            for (int i = 0; i < inputs.Length; i++)
+            {
+                Pools.Add(MaxPoolMultiDimensionalArray<float>(inputs[i], IMAGEWIDTH - 2, IMAGEHEIGHT - 2, 2, 2));
+            }
+            return Pools.ToArray();
+        }
+        public virtual int[][] Convolutions { get; }
         public virtual int UpdateSpeed { get; set; }
-        public virtual int SIZEOFINPUTS { get; set; }
+        public int SIZEOFINPUTS { get; set; }
         public virtual int NumberOfClassifications { get; set; }
-        public virtual int NumberOfKernels { get; set; }
+        public int NumberOfKernels { get; set; }
         public virtual float LearningRate { get; set; }
         public virtual int sizeOfData
         {
