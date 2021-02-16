@@ -28,3 +28,8 @@ C:\Users\tafid\source\repos\ArmourGan\ArmourGan\GAN\obj\Debug\netcoreapp3.1\Armo
 C:\Users\tafid\source\repos\ArmourGan\ArmourGan\GAN\bin\Debug\netcoreapp3.1\Microsoft.Office.Interop.Excel.dll
 C:\Users\tafid\source\repos\ArmourGan\ArmourGan\GAN\bin\Debug\netcoreapp3.1\Content\MachineLearning\DataSet\DalantiniumGreathelm.xnb
 C:\Users\tafid\source\repos\ArmourGan\ArmourGan\GAN\bin\Debug\netcoreapp3.1\Content\MachineLearning\DataSet\DalantiniumGreathelm_Head.xnb
+C:\Users\tafid\source\repos\ArmourGan\ArmourGan\GAN\bin\Debug\netcoreapp3.1\Microsoft.Win32.SystemEvents.dll
+C:\Users\tafid\source\repos\ArmourGan\ArmourGan\GAN\bin\Debug\netcoreapp3.1\System.Drawing.Common.dll
+C:\Users\tafid\source\repos\ArmourGan\ArmourGan\GAN\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp3.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\tafid\source\repos\ArmourGan\ArmourGan\GAN\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp3.0\System.Drawing.Common.dll
+C:\Users\tafid\source\repos\ArmourGan\ArmourGan\GAN\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp3.0\System.Drawing.Common.dll

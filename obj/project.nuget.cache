@@ -1,12 +1,15 @@
 {
   "version": 2,
-  "dgSpecHash": "7YTFSm1WuUHSfOO9u07zEqVZg3YLwnpqS21hw0PiqPxJij7gloOZ4IUwQYPSy7GvxWko2jQh+AjgFPeyXzR1Fw==",
+  "dgSpecHash": "ltfhIkmJ0RKDkGMia22GzDZMrr3LraaZzxsr1mtN3TKIPV52hmcjsr4ZtA66+gMooYI8+bbdeP0BkuokwxRxog==",
   "success": true,
   "projectFilePath": "C:\\Users\\tafid\\source\\repos\\ArmourGan\\ArmourGan\\GAN\\ArmourGan.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\tafid\\.nuget\\packages\\microsoft.netcore.platforms\\5.0.0\\microsoft.netcore.platforms.5.0.0.nupkg.sha512",
     "C:\\Users\\tafid\\.nuget\\packages\\microsoft.office.interop.excel\\15.0.4795.1000\\microsoft.office.interop.excel.15.0.4795.1000.nupkg.sha512",
+    "C:\\Users\\tafid\\.nuget\\packages\\microsoft.win32.systemevents\\5.0.0\\microsoft.win32.systemevents.5.0.0.nupkg.sha512",
     "C:\\Users\\tafid\\.nuget\\packages\\monogame.content.builder.task\\3.8.0.1641\\monogame.content.builder.task.3.8.0.1641.nupkg.sha512",
-    "C:\\Users\\tafid\\.nuget\\packages\\monogame.framework.desktopgl\\3.8.0.1641\\monogame.framework.desktopgl.3.8.0.1641.nupkg.sha512"
+    "C:\\Users\\tafid\\.nuget\\packages\\monogame.framework.desktopgl\\3.8.0.1641\\monogame.framework.desktopgl.3.8.0.1641.nupkg.sha512",
+    "C:\\Users\\tafid\\.nuget\\packages\\system.drawing.common\\5.0.1\\system.drawing.common.5.0.1.nupkg.sha512"
   ],
   "logs": [
     {

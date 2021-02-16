@@ -32,7 +32,7 @@ namespace ArmourGan
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            TextureCache.LoadTextures(Content);
             // TODO: use this.Content to load your game content here
         }
 
@@ -50,7 +50,9 @@ namespace ArmourGan
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
+            spriteBatch.Begin();
+            handwriting.Draw();
+            spriteBatch.End();
             // TODO: Add your drawing code here
 
             base.Draw(gameTime);
